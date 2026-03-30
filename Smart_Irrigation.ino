@@ -1,13 +1,13 @@
-#define BLYNK_TEMPLATE_ID "TMPL3D6Xg3w_8"
+#define BLYNK_TEMPLATE_ID "YourTemplateID"
 #define BLYNK_TEMPLATE_NAME "Soil Monitor"
-#define BLYNK_AUTH_TOKEN "jU_hdLVOhTQljSGtTS-E4JCqJvJ6DCC8"
+#define BLYNK_AUTH_TOKEN "YourAuthToken"
 
 #include <ESP8266WiFi.h>
 #include <BlynkSimpleEsp8266.h>
 
 // WiFi Credentials
-char ssid[] = "Unknown";
-char pass[] = "123456789";
+char ssid[] = "YourWiFiName";
+char pass[] = "YourPassword";
 
 // Pins
 #define soilPin A0
@@ -40,14 +40,14 @@ void setup() {
   pinMode(relayPin, OUTPUT);
   pinMode(wifi_led, OUTPUT);
 
-  digitalWrite(relayPin, HIGH);
+  digitalWrite(relayPin, LOW);
 
   WiFi.begin(ssid, pass);
   wifi_testing();
 
   Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass);
 
-  Serial.println("✅ Connected to Blynk");
+  Serial.println("Connected to Blynk");
 }
 
 void loop() {
@@ -71,23 +71,23 @@ void checkSoil() {
   if (moisture > threshold) {
 
     if (!notificationSent) {
-      Serial.println("📲 Sending Notification...");
+      Serial.println("Sending Notification...");
 
       Blynk.logEvent("soil_low", "Soil moisture is LOW!");
 
-      Serial.println("✅ Notification Sent");
+      Serial.println("Notification Sent");
 
       notificationSent = true;
       delay(3000); // small delay like reference code
     } 
     else {
-      Serial.println("⚠️ Already Sent (Waiting Reset)");
+      Serial.println("Already Sent (Waiting Reset)");
     }
 
   } 
   else {
     if (notificationSent) {
-      Serial.println("✅ Soil Normal → Reset Notification");
+      Serial.println("Soil Normal → Reset Notification");
     }
     notificationSent = false;
   }
@@ -95,14 +95,14 @@ void checkSoil() {
   delay(2000); // stable reading
 }
 
-// 🌐 WiFi Check Function (same as your reference)
+// WiFi Check Function (same as your reference)
 void wifi_testing() {
   while (WiFi.status() != WL_CONNECTED) {
     delay(250);
     Serial.print(".");
-    digitalWrite(wifi_led, HIGH);
-    delay(250);
     digitalWrite(wifi_led, LOW);
+    delay(250);
+    digitalWrite(wifi_led, HIGH);
 
     current = millis();
     if ((current - old) / 1000 > interval)
